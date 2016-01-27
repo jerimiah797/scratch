@@ -2,8 +2,12 @@
 Session.set("showAddForm", false);
 Session.set("recurring", false);
 Session.set("period", "none");
-Session.set("type", "none")
-Session.set("frequency", 1),
+Session.set("type", "none");
+Session.set("frequency", 1);
+Session.set("occurences_per_period", 1);
+Session.set("skips_per_period", 1);
+Session.set("multiples_enabled", false);
+Session.set("skips_enabled", false);
 
 
 // This code only runs on the client

@@ -102,11 +102,11 @@
        <div class="form-group" id="div_checkbox">
         <div class="col-sm-8 col-sm-offset-2">
          <label class="checkbox-horizontal">
-          <input name="checkbox" type="checkbox" value="More than once during the week"/>
+          <input name="checkbox" type="checkbox" id="enable_multiples" value="More than once during the week"/>
           More than once during the {{period}}
          </label>
          <label class="checkbox-horizontal">
-          <input name="checkbox" type="checkbox" value="Less often than every week"/>
+          <input name="checkbox" type="checkbox" id="enable_skips" value="Less often than every week"/>
           Less often than every {{period}}
         </label>
          <span class="help-block" id="hint_checkbox">
@@ -148,7 +148,7 @@
         </div>
        </div>
        {{/if}}
-
+       {{#if multiples_enabled}}
        <div class="form-group ">
         <label class="control-label col-sm-2" for="select1">
          How many times per {{period}}?
@@ -167,6 +167,8 @@
          </select>
         </div>
        </div>
+       {{/if}}
+       {{#if skips_enabled}}
        <div class="form-group ">
         <label class="control-label col-sm-2" for="select2">
          How often?
@@ -191,7 +193,7 @@
          </span>
         </div>
        </div>
-
+       {{/if}}
        {{#if period_is_month}}
        <div class="form-group ">
         <label class="control-label col-sm-2" for="dayofmonth">

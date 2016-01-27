@@ -71,6 +71,12 @@ Template.event_form.helpers({
     if (Session.get('period') == "month"){
       return true;
     };
+  },
+  multiples_enabled:function(){
+    return Session.get('multiples_enabled');
+  },
+  skips_enabled:function(){
+    return Session.get('skips_enabled');
   }
 });
 
@@ -106,5 +112,13 @@ Template.event_form.events({
   "change #frequency": function(evt){
     console.log("Frequency set to "+$(evt.target).val());
     Session.set("frequency", $(evt.target).val());
+  },
+  "click #enable_multiples": function(){
+    Session.set("multiples_enabled", !Session.get("multiples_enabled"));
+    console.log("Multiples clicked, set to "+Session.get("multiples_enabled"));
+  },
+  "click #enable_skips": function(){
+    Session.set("skips_enabled", !Session.get("skips_enabled"));
+    console.log("Skips clicked, set to "+Session.get("skips_enabled"));
   }
 })
