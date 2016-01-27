@@ -1,37 +1,3 @@
-//initialize session variables
-Session.set("showAddForm", false);
-Session.set("recurring", false);
-
-
-// This code only runs on the client
-// Template.body.helpers({
-//   events: [
-//     { name: "House", amount: 1200 },
-//     { name: "Car", amount: 300 },
-//     { name: "Phone", amount: 120 },
-//     { name: "Paycheck", amount: 2000 }
-//   ]
-// });
-
-Template.recurring.helpers({
-  events: function () {
-    return Events.find({}, {sort: {createdAt: -1}});
-  }
-});
-
-Template.show_event_form_button.events({
-  "click #show_form": function (event) {
-    Session.set("showAddForm", !Session.get("showAddForm"));
-    console.log("Session variable set to "+Session.get("showAddForm"));
-  }
-});
-
-Template.show_event_form_button.helpers({
-  showNewEventForm:function(){
-    return Session.get("showAddForm");
-  }
-});
-
 Template.event_form.events({
  "submit .new-event": function (event) {
    // Prevent default browser form submit
@@ -73,8 +39,9 @@ Template.event_form.events({
    event.target.type.value = "Bill";
    event.target.period.value = "Monthly";
 
-   //hide form
+   //hide form, reinitialize recurring checkbox
    Session.set("showAddForm", false);
+   Session.set("recurring", false);
  }
 });
 
@@ -84,33 +51,40 @@ Template.event_form.helpers({
   },
   recurring:function(){
     return Session.get("recurring");
+  },
+  frequency:function(){
+    return Session.get('freqency');
+  },
+  second_date:function(){
+    if (Session.get("frequency") == "Twice A"){
+      return true;
+    };
   }
 });
 
 Template.event_form.events({
-  "click #toggle_recur": function () {
-    Session.set("recurring", !Session.get("recurring"));
-    console.log("Recurring toggle set to "+Session.get("recurring"));
+  "change #recur_off": function () {
+    Session.set("recurring", false);
+    console.log("Clicked the One Time radio button");
+  },
+  "change #recur_on": function () {
+    Session.set("recurring", true);
+    console.log("Clicked the Recurring radio button");
+  },
+  "change #period_week": function () {
+    Session.set("period", "week");
+    console.log("Clicked the period_week radio button");
+  },
+  "change #period_month": function () {
+    Session.set("period", "month");
+    console.log("Clicked the period_month radio button");
+  },
+  "change #period_year": function () {
+    Session.set("period", "year");
+    console.log("Clicked the period_year radio button");
   },
   "change #frequency": function(evt){
-    console.log($(evt.target).val());
+    console.log("Frequency set to "+$(evt.target).val());
+    Session.set("frequency", $(evt.target).val());
   }
 })
-
-Template.event.events({
-  "click .toggle-checked": function () {
-    // Set the checked property to the opposite of its current value
-    Events.update(this._id, {
-      $set: {checked: ! this.checked}
-    });
-  },
-  "click .delete": function () {
-    Events.remove(this._id);
-  }
-});
-
-Template.event.helpers({
-  when:function(){
-    return "Once a Month on the 1st";
-  }
-});

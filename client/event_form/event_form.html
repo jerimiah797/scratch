@@ -1,0 +1,310 @@
+
+<template name="event_form">
+  {{#if showNewEventForm}}
+
+   <div class="container-fluid">
+    <div class="row">
+     <div class="col-md-6 col-sm-6 col-xs-12">
+      <form class="form-horizontal new-event" id="new-event" >
+       <div class="form-group ">
+        <label class="control-label col-sm-2" for="name">
+         Name
+        </label>
+        <div class="col-sm-10">
+         <input class="form-control" id="name" name="name" type="text"/>
+        </div>
+       </div>
+       <div class="form-group" id="type">
+        <label class="control-label col-sm-2 requiredField" for="radio">
+         Select One
+         <span class="asteriskField">
+          *
+         </span>
+        </label>
+        <div class="col-sm-10">
+         <label class="radio-inline">
+          <input name="radio" type="radio" value="Bill"/>
+          Bill
+         </label>
+         <label class="radio-inline">
+          <input name="radio" type="radio" value="Loan"/>
+          Loan
+         </label>
+         <label class="radio-inline">
+          <input name="radio" type="radio" value="Income"/>
+          Income
+         </label>
+         <span class="help-block" id="hint_radio">
+          Bills are regular payments for something you don't have a loan for. Loans have a big balance that you pay a little of every month. Income is typically your paycheck, or anything else you deposit into your account.
+         </span>
+        </div>
+       </div>
+       <div class="form-group ">
+        <label class="control-label col-sm-2 requiredField" for="number">
+         Amount
+         <span class="asteriskField">
+          *
+         </span>
+        </label>
+        <div class="col-sm-10">
+         <div class="input-group">
+          <div class="input-group-addon">
+           $
+          </div>
+          <input class="form-control" id="amount" name="number" placeholder="250" type="text"/>
+          <div class="input-group-addon">
+           .00
+          </div>
+         </div>
+        </div>
+       </div>
+       <div class="form-group">
+        <label class="control-label col-sm-2 requiredField" for="radio1">
+         Select One
+         <span class="asteriskField">
+          *
+         </span>
+        </label>
+        <div class="col-sm-10 " id="toggle_recur">
+         <label class="radio-inline">
+          <input name="radio1" type="radio" id="recur_off" value="false"/>
+          One Time
+         </label>
+         <label class="radio-inline">
+          <input name="radio1" type="radio" id="recur_on" value="true"/>
+          Repeating
+         </label>
+         <span class="help-block" id="hint_recur">
+          Select 'Repeating' if this item occurs on a regular basis.
+         </span>
+        </div>
+       </div>
+
+       {{#if recurring}}
+
+       <div class="form-group" id="period">
+        <label class="control-label col-sm-2" for="radio2">
+         Every
+        </label>
+        <div class="col-sm-10">
+         <label class="radio-inline">
+          <input name="radio2" type="radio" id="period_week" value="Week"/>
+          Week
+         </label>
+         <label class="radio-inline">
+          <input name="radio2" type="radio" id="period_month" value="Month"/>
+          Month
+         </label>
+         <label class="radio-inline">
+          <input name="radio2" type="radio" id="period_year" value="Year"/>
+          Year
+         </label>
+        </div>
+       </div>
+       <div class="form-group" id="div_checkbox">
+        <div class="col-sm-10 col-sm-offset-2">
+         <label class="checkbox-inline">
+          <input name="checkbox" type="checkbox" value="More than once during the week"/>
+          More than once during the week
+         </label>
+         <label class="checkbox-inline">
+          <input name="checkbox" type="checkbox" value="Less often than every week"/>
+          Less often than every week
+         </label>
+         <span class="help-block" id="hint_checkbox">
+          Use the first option for things like 'twice a month'. Use the second option for things like 'every other week'
+         </span>
+        </div>
+       </div>
+       <div class="form-group ">
+        <label class="control-label col-sm-2" for="days-of-week">
+         Day of week
+        </label>
+        <div class="col-sm-10">
+         <select class="select form-control" id="days-of-week" name="days-of-week">
+          <option value="Monday">
+           Monday
+          </option>
+          <option value="Tuesday">
+           Tuesday
+          </option>
+          <option value="Wednesday">
+           Wednesday
+          </option>
+          <option value="Thursday">
+           Thursday
+          </option>
+          <option value="Friday">
+           Friday
+          </option>
+          <option value="Saturday">
+           Saturday
+          </option>
+          <option value="Sunday">
+           Sunday
+          </option>
+         </select>
+        </div>
+       </div>
+       <div class="form-group ">
+        <label class="control-label col-sm-2" for="select1">
+         How many times per month?
+        </label>
+        <div class="col-sm-10">
+         <select class="select form-control" id="select1" name="select1">
+          <option value="2">
+           2
+          </option>
+          <option value="3">
+           3
+          </option>
+          <option value="4">
+           4
+          </option>
+         </select>
+        </div>
+       </div>
+       <div class="form-group ">
+        <label class="control-label col-sm-2" for="select2">
+         How often?
+        </label>
+        <div class="col-sm-10">
+         <select class="select form-control" id="select2" name="select2">
+          <option value="Every 2 weeks">
+           Every 2 weeks
+          </option>
+          <option value="Every 3 weeks">
+           Every 3 weeks
+          </option>
+          <option value="Every 4 weeks">
+           Every 4 weeks
+          </option>
+          <option value="More...">
+           More...
+          </option>
+         </select>
+         <span class="help-block" id="hint_select2">
+          2 represents every other week. 3 represents every three weeks, etc.
+         </span>
+        </div>
+       </div>
+       <div class="form-group ">
+        <label class="control-label col-sm-2" for="select3">
+         Date of Month
+        </label>
+        <div class="col-sm-10">
+         <select class="select form-control" id="select3" name="select3">
+          <option value="1">
+           1
+          </option>
+          <option value="2">
+           2
+          </option>
+          <option value="3">
+           3
+          </option>
+          <option value="4">
+           4
+          </option>
+          <option value="5">
+           5
+          </option>
+          <option value="6">
+           6
+          </option>
+          <option value="7">
+           7
+          </option>
+          <option value="8">
+           8
+          </option>
+          <option value="9">
+           9
+          </option>
+          <option value="10">
+           10
+          </option>
+          <option value="11">
+           11
+          </option>
+          <option value="12">
+           12
+          </option>
+          <option value="13">
+           13
+          </option>
+          <option value="14">
+           14
+          </option>
+          <option value="15">
+           15
+          </option>
+          <option value="16">
+           16
+          </option>
+          <option value="17">
+           17
+          </option>
+          <option value="18">
+           18
+          </option>
+          <option value="19">
+           19
+          </option>
+          <option value="20">
+           20
+          </option>
+          <option value="21">
+           21
+          </option>
+          <option value="22">
+           22
+          </option>
+          <option value="23">
+           23
+          </option>
+          <option value="24">
+           24
+          </option>
+          <option value="25">
+           25
+          </option>
+          <option value="26">
+           26
+          </option>
+          <option value="27">
+           27
+          </option>
+          <option value="28">
+           28
+          </option>
+          <option value="29">
+           29
+          </option>
+          <option value="30">
+           30
+          </option>
+          <option value="31">
+           31
+          </option>
+         </select>
+        </div>
+       </div>
+
+       {{/if}}
+
+       <div class="form-group">
+        <div class="col-sm-10 col-sm-offset-2">
+         <button class="btn btn-primary " name="submit" type="submit">
+          Submit
+         </button>
+        </div>
+       </div>
+      </form>
+     </div>
+    </div>
+   </div>
+
+
+  {{/if}}
+</template>
