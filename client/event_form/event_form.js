@@ -4,17 +4,16 @@ Template.event_form.events({
    console.log(".new-event submitted!")
    event.preventDefault();
 
-   // Get value from form element
+   // Get value from form element Session variables
    var name = event.target.name.value;
    var amount = event.target.amount.value;
-   var type = event.target.type.value;
-
+   var type = Session.get("type");
    var recurring = Session.get("recurring");
+
    if (recurring==true) {
-     var frequency = event.target.frequency.value;
-     var period = event.target.period.value;
+     var frequency = Session.get("frequency");
+     var period = Session.get("period");
      var dayofmonth = event.target.dayofmonth.value;
-     var dayofmonth_2 = event.target.dayofmonth_2.value;
      //var dayofweek = event.target.dayofweek.value;
      var when = new Date();
    };
@@ -36,8 +35,8 @@ Template.event_form.events({
    // Clear form
    event.target.name.value = "";
    event.target.amount.value = "";
-   event.target.type.value = "Bill";
-   event.target.period.value = "Monthly";
+   //event.target.type.value = "Payment";
+   //event.target.period.value = "Month";
 
    //hide form, reinitialize recurring checkbox
    Session.set("showAddForm", false);
@@ -55,14 +54,35 @@ Template.event_form.helpers({
   frequency:function(){
     return Session.get('freqency');
   },
-  second_date:function(){
-    if (Session.get("frequency") == "Twice A"){
+  period:function(){
+    return Session.get('period');
+  },
+  period_selected:function(){
+    if (Session.get('period') != "none"){
+      return true;
+    };
+  },
+  period_is_week:function(){
+    if (Session.get('period') == "week"){
+      return true;
+    };
+  },
+  period_is_month:function(){
+    if (Session.get('period') == "month"){
       return true;
     };
   }
 });
 
 Template.event_form.events({
+  "change #type_payment": function () {
+    Session.set("type", "Payment");
+    console.log("Clicked the Payment radio button");
+  },
+  "change #type_income": function () {
+    Session.set("type", "Income");
+    console.log("Clicked the Income radio button");
+  },
   "change #recur_off": function () {
     Session.set("recurring", false);
     console.log("Clicked the One Time radio button");

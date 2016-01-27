@@ -11,31 +11,27 @@
          Name
         </label>
         <div class="col-sm-10">
-         <input class="form-control" id="name" name="name" type="text"/>
-        </div>
-       </div>
-       <div class="form-group" id="type">
-        <label class="control-label col-sm-2 requiredField" for="radio">
-         Select One
-         <span class="asteriskField">
-          *
-         </span>
-        </label>
-        <div class="col-sm-10">
+           <input class="form-control" id="name" name="name" type="text"/>
+          </div>
+         </div>
+         <div class="form-group" id="type">
+          <label class="control-label col-sm-2 requiredField" for="radio">
+           Select One
+           <span class="asteriskField">
+            *
+           </span>
+          </label>
+          <div class="col-sm-10">
+           <label class="radio-inline">
+            <input name="radio" type="radio" id="type_payment" value="Payment"/>
+            Payment
+           </label>
          <label class="radio-inline">
-          <input name="radio" type="radio" value="Bill"/>
-          Bill
-         </label>
-         <label class="radio-inline">
-          <input name="radio" type="radio" value="Loan"/>
-          Loan
-         </label>
-         <label class="radio-inline">
-          <input name="radio" type="radio" value="Income"/>
+          <input name="radio" type="radio" id="type_income" value="Income"/>
           Income
          </label>
          <span class="help-block" id="hint_radio">
-          Bills are regular payments for something you don't have a loan for. Loans have a big balance that you pay a little of every month. Income is typically your paycheck, or anything else you deposit into your account.
+
          </span>
         </div>
        </div>
@@ -101,21 +97,26 @@
          </label>
         </div>
        </div>
+
+       {{#if period_selected}}
        <div class="form-group" id="div_checkbox">
-        <div class="col-sm-10 col-sm-offset-2">
-         <label class="checkbox-inline">
+        <div class="col-sm-8 col-sm-offset-2">
+         <label class="checkbox-horizontal">
           <input name="checkbox" type="checkbox" value="More than once during the week"/>
-          More than once during the week
+          More than once during the {{period}}
          </label>
-         <label class="checkbox-inline">
+         <label class="checkbox-horizontal">
           <input name="checkbox" type="checkbox" value="Less often than every week"/>
-          Less often than every week
-         </label>
+          Less often than every {{period}}
+        </label>
          <span class="help-block" id="hint_checkbox">
-          Use the first option for things like 'twice a month'. Use the second option for things like 'every other week'
+          Use the first option for things like 'twice a {{period}}'. Use the second option for things like 'every other {{period}}'
          </span>
         </div>
        </div>
+       {{/if}}
+
+       {{#if period_is_week}}
        <div class="form-group ">
         <label class="control-label col-sm-2" for="days-of-week">
          Day of week
@@ -146,9 +147,11 @@
          </select>
         </div>
        </div>
+       {{/if}}
+
        <div class="form-group ">
         <label class="control-label col-sm-2" for="select1">
-         How many times per month?
+         How many times per {{period}}?
         </label>
         <div class="col-sm-10">
          <select class="select form-control" id="select1" name="select1">
@@ -171,29 +174,31 @@
         <div class="col-sm-10">
          <select class="select form-control" id="select2" name="select2">
           <option value="Every 2 weeks">
-           Every 2 weeks
+           Every 2 {{period}}s
           </option>
           <option value="Every 3 weeks">
-           Every 3 weeks
+           Every 3 {{period}}s
           </option>
           <option value="Every 4 weeks">
-           Every 4 weeks
+           Every 4 {{period}}s
           </option>
           <option value="More...">
            More...
           </option>
          </select>
          <span class="help-block" id="hint_select2">
-          2 represents every other week. 3 represents every three weeks, etc.
+          2 represents every other {{period}}. 3 represents every three {{period}}s, etc.
          </span>
         </div>
        </div>
+
+       {{#if period_is_month}}
        <div class="form-group ">
-        <label class="control-label col-sm-2" for="select3">
+        <label class="control-label col-sm-2" for="dayofmonth">
          Date of Month
         </label>
         <div class="col-sm-10">
-         <select class="select form-control" id="select3" name="select3">
+         <select class="select form-control" id="dayofmonth" name="dayofmonth">
           <option value="1">
            1
           </option>
@@ -290,8 +295,9 @@
          </select>
         </div>
        </div>
-
        {{/if}}
+
+       {{/if}} <!--end of recurring #if -->
 
        <div class="form-group">
         <div class="col-sm-10 col-sm-offset-2">

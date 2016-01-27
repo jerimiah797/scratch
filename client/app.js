@@ -2,7 +2,8 @@
 Session.set("showAddForm", false);
 Session.set("recurring", false);
 Session.set("period", "none");
-Session.set("frequency", "Once A"),
+Session.set("type", "none")
+Session.set("frequency", 1),
 
 
 // This code only runs on the client
