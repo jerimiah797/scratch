@@ -36,7 +36,7 @@ Template.event_form.events({
    event.target.name.value = "";
    event.target.amount.value = "";
    //event.target.type.value = "Payment";
-   //event.target.period.value = "Month";
+   Session.set('period', "none");
 
    //hide form, reinitialize recurring checkbox
    Session.set("showAddForm", false);
@@ -72,8 +72,16 @@ Template.event_form.helpers({
       return true;
     };
   },
+  period_is_year:function(){
+    if (Session.get('period') == "year"){
+      return true;
+    };
+  },
   multiples_enabled:function(){
     return Session.get('multiples_enabled');
+  },
+  multiples:function(){
+    return Session.get('multiples');
   },
   skips_enabled:function(){
     return Session.get('skips_enabled');
@@ -120,5 +128,17 @@ Template.event_form.events({
   "click #enable_skips": function(){
     Session.set("skips_enabled", !Session.get("skips_enabled"));
     console.log("Skips clicked, set to "+Session.get("skips_enabled"));
+  },
+  "click #add_date": function(){
+    if (Session.get("multiples").length < 5) {
+      Session.set("multiples", Array(Session.get("multiples").length+1));
+    };
+    console.log("Clicked the button to add a multiple. Number is now "+Session.get("multiples").length.toString());
+  },
+  "click #del_date": function(){
+    if (Session.get("multiples").length > 1) {
+      Session.set("multiples", Array(Session.get("multiples").length-1));
+    };
+    console.log("Clicked the button to del a multiple. Number is now "+Session.get("multiples").length.toString());
   }
 })
