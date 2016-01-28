@@ -15,9 +15,15 @@ Template.event_form.events({
      var period = Session.get("period");
      var dayofmonth = event.target.dayofmonth.value;
      //var dayofweek = event.target.dayofweek.value;
-     var when = new Date();
+     var starting = new Date();
    };
 
+   console.log("name: "+name);
+   console.log("amount: "+amount.toString());
+   console.log("type: "+type);
+   console.log("recurring: "+recurring.toString());
+   console.log("frequency: "+frequency);
+   console.log("period: "+period);
 
    // Insert a task into the collection
    Events.insert({
@@ -28,7 +34,7 @@ Template.event_form.events({
      frequency: frequency,
      period: period,
      dayofmonth: dayofmonth,
-     when: when,
+     starting: starting,
      createdAt: new Date() // current time
    });
 
@@ -42,6 +48,12 @@ Template.event_form.events({
    Session.set("showAddForm", false);
    Session.set("recurring", false);
  }
+});
+
+Template.dayofmonth_selector.helpers({
+  multiples:function(){
+    return Session.get('multiples');
+  }
 });
 
 Template.event_form.helpers({
@@ -76,9 +88,6 @@ Template.event_form.helpers({
     if (Session.get('period') == "year"){
       return true;
     };
-  },
-  multiples_enabled:function(){
-    return Session.get('multiples_enabled');
   },
   multiples:function(){
     return Session.get('multiples');
@@ -120,10 +129,6 @@ Template.event_form.events({
   "change #frequency": function(evt){
     console.log("Frequency set to "+$(evt.target).val());
     Session.set("frequency", $(evt.target).val());
-  },
-  "click #enable_multiples": function(){
-    Session.set("multiples_enabled", !Session.get("multiples_enabled"));
-    console.log("Multiples clicked, set to "+Session.get("multiples_enabled"));
   },
   "click #enable_skips": function(){
     Session.set("skips_enabled", !Session.get("skips_enabled"));

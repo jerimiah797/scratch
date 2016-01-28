@@ -71,7 +71,7 @@
 
        <div class="form-group" id="period">
         <label class="control-label col-sm-4" for="radio2">
-         Measure By
+         Every
         </label>
         <div class="col-sm-8">
          <label class="radio-inline">
@@ -97,9 +97,7 @@
        {{/if}}
 
        {{#if period_is_month}}
-         {{#each multiples}}
-           {{> dayofmonth_selector}}
-         {{/each}}
+          {{> dayofmonth_selector}}
        {{/if}}
 
        {{#if period_is_week}}
@@ -165,9 +163,10 @@
 </template>
 
 <template name="dayofmonth_selector">
+  {{#each multiples}}
   <div class="form-group ">
    <label class="control-label col-sm-4" for="dayofmonth">
-    Which Date?
+    Which Date {{@index}}?
    </label>
    <div class="col-sm-2">
     <select class="select form-control" id="dayofmonth" name="dayofmonth">
@@ -275,6 +274,7 @@
      </button>
    </div>
   </div>
+  {{/each}}
 </template>
 
 <template name="dayofweek_selector">
