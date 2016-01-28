@@ -4,7 +4,7 @@ Session.set("recurring", false); //only true for testing
 Session.set("period", "none");
 Session.set("type", "none");
 Session.set("frequency", 1);
-Session.set("multiples", Array(1));
+Session.set("multiples", ["multiple-0"]);
 Session.set("skips", 1);
 Session.set("skips_enabled", false);
 

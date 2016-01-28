@@ -136,14 +136,24 @@ Template.event_form.events({
   },
   "click #add_date": function(){
     if (Session.get("multiples").length < 5) {
-      Session.set("multiples", Array(Session.get("multiples").length+1));
+      Session.set("multiples", rebuildMultipleArray(Session.get("multiples").length+1));
     };
     console.log("Clicked the button to add a multiple. Number is now "+Session.get("multiples").length.toString());
   },
   "click #del_date": function(){
     if (Session.get("multiples").length > 1) {
-      Session.set("multiples", Array(Session.get("multiples").length-1));
+      Session.set("multiples", rebuildMultipleArray(Session.get("multiples").length-1));
     };
     console.log("Clicked the button to del a multiple. Number is now "+Session.get("multiples").length.toString());
   }
 })
+
+function rebuildMultipleArray(length) {
+  a = new Array(length);
+  for (i = 0; i < length; i++) {
+    id = "multiple-"+i.toString();
+    console.log("index: "+i.toString()+"  ID: "+id);
+    a[i] = id;
+  }
+  return a;
+}
