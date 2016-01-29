@@ -159,10 +159,10 @@ Template.dayofmonth_selector.events({
     element = $(div_id);
     console.log(element[0].value);
     value = element[0].value;
-    multiple = Session.get('multiples');
-    multiples[index] = value;
-    console.log("picked a new date! Updated array: "+multiples.toString());
-    //Session.set('multiples', multiples);
+    freq = Session.get('frequency');
+    freq[index] = value;
+    console.log("picked a new date! Updated array: "+freq.toString());
+    Session.set('frequency', freq);
   }
 });
 
@@ -182,8 +182,11 @@ function rebuildMultipleArray(length) {
   freq = Session.get('frequency');
   console.log("freq: "+freq.toString());
   if (diff == 1) {
-    freq.push();
+    var toClass = {}.toString; // (1)
+    console.log( toClass.call( freq ) ); // [object Array]
+    freq.push(0);
   } else freq.pop();
   console.log("freq after: "+freq.toString());
+  Session.set('frequency', freq);
   return a;
 }

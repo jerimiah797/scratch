@@ -3,8 +3,8 @@ Session.set("showAddForm", false); //only true for testing
 Session.set("recurring", false); //only true for testing
 Session.set("period", "none");
 Session.set("type", "none");
-Session.set("frequency", 1);
-Session.set("multiples", ["Choose.."]);
+Session.set("frequency", [0]);
+Session.set("multiples", [0]);
 Session.set("skips", 1);
 Session.set("skips_enabled", false);
 
