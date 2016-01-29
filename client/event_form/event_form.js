@@ -11,9 +11,15 @@ Template.event_form.events({
    var recurring = Session.get("recurring");
 
    if (recurring==true) {
-     var frequency = Session.get("frequency").length;
      var period = Session.get("period");
-     var dayofmonth = event.target.dayofmonth.value;
+     if (period == 'week') {
+       var frequency = Session.get('event_days');
+     } else if (period == 'month') {
+       var frequency = Session.get('event_dates');
+     } else if (period == 'year') {
+       var frequency = Session.get('event_months');
+       var sub_frequency = Session.get('event_dates');
+     }
      //var dayofweek = event.target.dayofweek.value;
      var starting = new Date();
    };
@@ -22,7 +28,7 @@ Template.event_form.events({
    console.log("amount: "+amount.toString());
    console.log("type: "+type);
    console.log("recurring: "+recurring.toString());
-   console.log("frequency: "+frequency);
+   console.log("frequency: "+frequency.toString());
    console.log("period: "+period);
 
    // Insert a task into the collection
@@ -33,7 +39,6 @@ Template.event_form.events({
      //recurring: recurring,
      frequency: frequency,
      period: period,
-     dayofmonth: dayofmonth,
      starting: starting,
      createdAt: new Date() // current time
    });
@@ -41,9 +46,17 @@ Template.event_form.events({
    // Clear form
    event.target.name.value = "";
    event.target.amount.value = "";
-   //event.target.type.value = "Payment";
+   //Reinitialize Session vars
    Session.set('period', "none");
-
+   Session.set("type", "none");
+   Session.set('event_dates', [1]);
+   Session.set('event_days', ["Monday"]);
+   Session.set('event_months', ["January"]);
+   Session.set('event_dates_pickers', [0]);
+   Session.set('event_days_pickers' [0]);
+   Session.set('event_months_pickers', [0]);
+   Session.set("skips", 1);
+   Session.set("skips_enabled", false);
    //hide form, reinitialize recurring checkbox
    Session.set("showAddForm", false);
    Session.set("recurring", false);
@@ -83,9 +96,6 @@ Template.event_form.helpers({
       return true;
     };
   },
-  multiples:function(){
-    return Session.get('multiples');
-  },
   skips_enabled:function(){
     return Session.get('skips_enabled');
   }
@@ -110,41 +120,29 @@ Template.event_form.events({
   },
   "change #period_week": function () {
     Session.set("period", "week");
-    console.log("Clicked the period_week radio button");
+    // need to set event_days picker to current values in the session variable
+    console.log("Switched to weeks. Current days are "+Session.get('event_days'));
   },
   "change #period_month": function () {
     Session.set("period", "month");
-    console.log("Clicked the period_month radio button");
+    // need to set event_dates picker to current values in the session variable
+    console.log("Switched to months. Current dates are "+Session.get('event_dates'));
   },
   "change #period_year": function () {
     Session.set("period", "year");
-    console.log("Clicked the period_year radio button");
-  },
-  "change #frequency": function(evt){
-    console.log("Frequency set to "+$(evt.target).val());
-    Session.set("frequency", $(evt.target).val());
+    // need to set event_dates picker to current values in the session variable
+    console.log("Switched to year. Current months are "+Session.get('event_months'));
   },
   "click #enable_skips": function(){
     Session.set("skips_enabled", !Session.get("skips_enabled"));
     console.log("Skips clicked, set to "+Session.get("skips_enabled"));
   },
-  "click #add_date": function(){
-    if (Session.get("multiples").length < 5) {
-      Session.set("multiples", rebuildMultipleArray(Session.get("multiples").length+1));
-    };
-    console.log("Clicked the button to add a multiple. Number is now "+Session.get("multiples").length.toString());
-  },
-  "click #del_date": function(){
-    if (Session.get("multiples").length > 1) {
-      Session.set("multiples", rebuildMultipleArray(Session.get("multiples").length-1));
-    };
-    console.log("Clicked the button to del a multiple. Number is now "+Session.get("multiples").length.toString());
-  }
+
 })
 
 Template.dayofmonth_selector.helpers({
-  multiples:function(){
-    return Session.get('multiples');
+  pickers:function(){
+    return Session.get('event_dates_pickers');
   },
   first_instance:function(a){
     if (a == 0) return true;
@@ -159,34 +157,54 @@ Template.dayofmonth_selector.events({
     element = $(div_id);
     console.log(element[0].value);
     value = element[0].value;
-    freq = Session.get('frequency');
+    freq = Session.get('event_dates');
     freq[index] = value;
     console.log("picked a new date! Updated array: "+freq.toString());
-    Session.set('frequency', freq);
+    Session.set('event_dates', freq);
+  },
+  "click #add_date": function(){
+    if (Session.get("event_dates_pickers").length < 5) {
+      Session.set("event_dates_pickers", rebuildPickers(Session.get("event_dates_pickers").length+1, Session.get('event_dates_pickers')));
+    };
+    console.log("Clicked the button to add a picker. Number is now "+Session.get("event_dates_pickers").length.toString());
+  },
+  "click #del_date": function(){
+    if (Session.get("event_dates_pickers").length > 1) {
+      Session.set("event_dates_pickers", rebuildPickers(Session.get("event_dates_pickers").length-1, Session.get('event_dates_pickers')));
+    };
+    console.log("Clicked the button to del a picker. Number is now "+Session.get("event_dates_pickers").length.toString());
   }
 });
 
-function rebuildMultipleArray(length) {
-  multiples = Session.get('multiples');
-  orig_length = Session.get('multiples').length;
+function rebuildPickers(length, pickers) {
+  orig_length = pickers.length;
   diff = length - orig_length;
   console.log("orig: "+orig_length.toString()+", new: "+length.toString()+", diff: "+diff.toString());
-  console.log(multiples.toString());
+  console.log(pickers.toString());
   a = new Array(length);
   for (i = 0; i < length; i++) {
-    id = i;
-    //console.log("index: "+i.toString()+"  ID: "+id);
-    a[i] = id;
+    a[i] = i;
   }
   console.log(a.toString());
-  freq = Session.get('frequency');
+  period = Session.get('period');
+  if (period == 'week') {
+    freq = Session.get('event_days');
+  } else if (period == 'month') {
+    freq = Session.get('event_dates');
+  } else if (period == 'year') {
+    freq = Session.get('event_dates');
+  }
   console.log("freq: "+freq.toString());
   if (diff == 1) {
-    var toClass = {}.toString; // (1)
-    console.log( toClass.call( freq ) ); // [object Array]
-    freq.push(0);
+    freq.push(1);
   } else freq.pop();
   console.log("freq after: "+freq.toString());
-  Session.set('frequency', freq);
+  if (period == 'week') {
+    Session.set('event_days', freq);
+  } else if (period == 'month') {
+    Session.set('event_dates', freq);
+  } else if (period == 'year') {
+    Session.set('event_dates', freq);
+  }
   return a;
 }

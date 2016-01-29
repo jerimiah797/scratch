@@ -105,20 +105,14 @@
        {{/if}}
 
        <div class="form-group" id="div_checkbox">
-        <!--div class="col-sm-8 col-sm-offset-4">
-         <label class="checkbox-horizontal">
-          <input name="checkbox" type="checkbox" id="enable_multiples" value="More than once during the week"/>
-          More than once during the {{period}}
-         </label>
-       </div-->
-       <div class="col-sm-8 col-sm-offset-4">
-         <label class="checkbox-horizontal">
-          <input name="checkbox" type="checkbox" id="enable_skips" value="Less often than every week"/>
-          Less often than every {{period}}
-        </label>
-         <span class="help-block" id="hint_checkbox">
-          Use this for things like 'every other {{period}}'
-         </span>
+         <div class="col-sm-8 col-sm-offset-4">
+           <label class="checkbox-horizontal">
+             <input name="checkbox" type="checkbox" id="enable_skips" value="Less often than every week"/>
+              Less often than every {{period}}
+           </label>
+           <span class="help-block" id="hint_checkbox">
+             Use this for things like 'every other {{period}}'
+           </span>
         </div>
        </div>
        {{/if}}
@@ -163,7 +157,7 @@
 </template>
 
 <template name="dayofmonth_selector">
-  {{#each multiples}}
+  {{#each pickers}}
   <div class="form-group ">
    <label class="control-label col-sm-4" for="dayofmonth">
   {{#if first_instance @index}}
