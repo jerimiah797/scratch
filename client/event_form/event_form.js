@@ -11,7 +11,7 @@ Template.event_form.events({
    var recurring = Session.get("recurring");
 
    if (recurring==true) {
-     var frequency = Session.get("frequency");
+     var frequency = Session.get("frequency").length;
      var period = Session.get("period");
      var dayofmonth = event.target.dayofmonth.value;
      //var dayofweek = event.target.dayofweek.value;
@@ -48,12 +48,6 @@ Template.event_form.events({
    Session.set("showAddForm", false);
    Session.set("recurring", false);
  }
-});
-
-Template.dayofmonth_selector.helpers({
-  multiples:function(){
-    return Session.get('multiples');
-  }
 });
 
 Template.event_form.helpers({
@@ -148,12 +142,48 @@ Template.event_form.events({
   }
 })
 
+Template.dayofmonth_selector.helpers({
+  multiples:function(){
+    return Session.get('multiples');
+  },
+  first_instance:function(a){
+    if (a == 0) return true;
+  }
+});
+
+Template.dayofmonth_selector.events({
+  "change .multiples":function(event, template){
+    index = this.toString();
+    div_id = "#"+this.toString();
+    console.log(div_id);
+    element = $(div_id);
+    console.log(element[0].value);
+    value = element[0].value;
+    multiple = Session.get('multiples');
+    multiples[index] = value;
+    console.log("picked a new date! Updated array: "+multiples.toString());
+    //Session.set('multiples', multiples);
+  }
+});
+
 function rebuildMultipleArray(length) {
+  multiples = Session.get('multiples');
+  orig_length = Session.get('multiples').length;
+  diff = length - orig_length;
+  console.log("orig: "+orig_length.toString()+", new: "+length.toString()+", diff: "+diff.toString());
+  console.log(multiples.toString());
   a = new Array(length);
   for (i = 0; i < length; i++) {
-    id = "multiple-"+i.toString();
-    console.log("index: "+i.toString()+"  ID: "+id);
+    id = i;
+    //console.log("index: "+i.toString()+"  ID: "+id);
     a[i] = id;
   }
+  console.log(a.toString());
+  freq = Session.get('frequency');
+  console.log("freq: "+freq.toString());
+  if (diff == 1) {
+    freq.push();
+  } else freq.pop();
+  console.log("freq after: "+freq.toString());
   return a;
 }

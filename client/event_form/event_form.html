@@ -166,10 +166,12 @@
   {{#each multiples}}
   <div class="form-group ">
    <label class="control-label col-sm-4" for="dayofmonth">
-    Which Date {{@index}}?
+  {{#if first_instance @index}}
+    Which Date(s)?
+  {{/if}}
    </label>
-   <div class="col-sm-2">
-    <select class="select form-control" id="dayofmonth" name="dayofmonth">
+   <div class="col-sm-4">
+    <select class="select form-control multiples" id="{{@index}}" name="dayofmonth">
      <option value="1">
       1
      </option>
