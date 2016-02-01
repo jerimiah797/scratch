@@ -141,70 +141,68 @@ Template.event_form.events({
 })
 
 Template.dayofmonth_selector.helpers({
-  pickers:function(){
-    return Session.get('event_dates_pickers');
+  event_dates:function(){
+    return Session.get('event_dates');
   },
   first_instance:function(a){
     if (a == 0) return true;
+  },
+  dateIs:function(index, num){
+    //index = this.target.id;
+    dates = Session.get('event_dates');
+    //console.log(index+", "+num+", "+values[index]);
+    //console.log("Evaluating value for date "+index.toString()+" which is "+values[index].toString());
+    if (dates[index] == num) {
+      return true;
+    }
+  },
+  not_equal:function(a,b){
+    if (a != b) return true;
+  },
+  not_the_only_date:function(){
+    length = Session.get('event_dates').length;
+    if (length > 1) return true;
   }
+});
+
+Template.dayofmonth_selector.onRendered(function()  {
+  //console.log("I'm getting rendered!");
 });
 
 Template.dayofmonth_selector.events({
-  "change .multiples":function(event, template){
-    index = this.toString();
-    div_id = "#"+this.toString();
-    console.log(div_id);
-    element = $(div_id);
-    console.log(element[0].value);
-    value = element[0].value;
-    freq = Session.get('event_dates');
-    freq[index] = value;
-    console.log("picked a new date! Updated array: "+freq.toString());
-    Session.set('event_dates', freq);
+  "change .date_picker":function(event){
+    //console.log("picked a new date!");
+    index = event.target.id;
+    //console.log("Index: "+index);
+    value = event.target.value;
+    dates = Session.get('event_dates');
+    dates[index] = value;
+    console.log("Changing a date: "+dates.toString());
+    Session.set('event_dates', dates);
   },
-  "click #add_date": function(){
-    if (Session.get("event_dates_pickers").length < 5) {
-      Session.set("event_dates_pickers", rebuildPickers(Session.get("event_dates_pickers").length+1, Session.get('event_dates_pickers')));
+  "click .add_date": function(event){
+    dates = Session.get('event_dates');
+    index = event.target.id;
+    console.log("Adding another date");
+    //console.log("currently there are "+pickers.length);
+    if (dates.length < 5) {
+      //dates.push(null);
+      dates.splice(index+1, 0, null);
+      Session.set('event_dates', dates);
     };
-    console.log("Clicked the button to add a picker. Number is now "+Session.get("event_dates_pickers").length.toString());
+    console.log("Dates: "+dates.toString());
   },
-  "click #del_date": function(){
-    if (Session.get("event_dates_pickers").length > 1) {
-      Session.set("event_dates_pickers", rebuildPickers(Session.get("event_dates_pickers").length-1, Session.get('event_dates_pickers')));
+  "click .del_date": function(event){
+    dates = Session.get('event_dates');
+    console.log("dates before: "+dates.toString());
+    index = event.target.id;
+    console.log("Removing a date at index "+index);
+    //console.log("currently there are "+pickers.length);
+    if (dates.length > 1) {
+      //dates.pop();
+      dates.splice(index, 1);
+      Session.set('event_dates', dates);
     };
-    console.log("Clicked the button to del a picker. Number is now "+Session.get("event_dates_pickers").length.toString());
+    console.log("Dates: "+dates.toString());
   }
 });
-
-function rebuildPickers(length, pickers) {
-  orig_length = pickers.length;
-  diff = length - orig_length;
-  console.log("orig: "+orig_length.toString()+", new: "+length.toString()+", diff: "+diff.toString());
-  console.log(pickers.toString());
-  a = new Array(length);
-  for (i = 0; i < length; i++) {
-    a[i] = i;
-  }
-  console.log(a.toString());
-  period = Session.get('period');
-  if (period == 'week') {
-    freq = Session.get('event_days');
-  } else if (period == 'month') {
-    freq = Session.get('event_dates');
-  } else if (period == 'year') {
-    freq = Session.get('event_dates');
-  }
-  console.log("freq: "+freq.toString());
-  if (diff == 1) {
-    freq.push(1);
-  } else freq.pop();
-  console.log("freq after: "+freq.toString());
-  if (period == 'week') {
-    Session.set('event_days', freq);
-  } else if (period == 'month') {
-    Session.set('event_dates', freq);
-  } else if (period == 'year') {
-    Session.set('event_dates', freq);
-  }
-  return a;
-}

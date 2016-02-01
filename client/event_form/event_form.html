@@ -157,7 +157,7 @@
 </template>
 
 <template name="dayofmonth_selector">
-  {{#each pickers}}
+  {{#each event_dates}}
   <div class="form-group ">
    <label class="control-label col-sm-4" for="dayofmonth">
   {{#if first_instance @index}}
@@ -165,109 +165,116 @@
   {{/if}}
    </label>
    <div class="col-sm-4">
-    <select class="select form-control multiples" id="{{@index}}" name="dayofmonth">
-     <option value="1">
+    <select class="select form-control date_picker" id="{{@index}}" name="dayofmonth">
+      <option value="0">
+        Pick a date
+      </option>
+     <option value="1" selected="{{dateIs @index 1}}">
       1
      </option>
-     <option value="2">
+     <option value="2" selected="{{dateIs @index 2}}">
       2
      </option>
-     <option value="3">
+     <option value="3" selected="{{dateIs @index 3}}">
       3
      </option>
-     <option value="4">
+     <option value="4" selected="{{dateIs @index 4}}">
       4
      </option>
-     <option value="5">
+     <option value="5" selected="{{dateIs @index 5}}">
       5
      </option>
-     <option value="6">
+     <option value="6" selected="{{dateIs @index 6}}">
       6
      </option>
-     <option value="7">
+     <option value="7" selected="{{dateIs @index 7}}">
       7
      </option>
-     <option value="8">
+     <option value="8" selected="{{dateIs @index 8}}">
       8
      </option>
-     <option value="9">
+     <option value="9" selected="{{dateIs @index 9}}">
       9
      </option>
-     <option value="10">
+     <option value="10" selected="{{dateIs @index 10}}">
       10
      </option>
-     <option value="11">
+     <option value="11" selected="{{dateIs @index 11}}">
       11
      </option>
-     <option value="12">
+     <option value="12" selected="{{dateIs @index 12}}">
       12
      </option>
-     <option value="13">
+     <option value="13" selected="{{dateIs @index 13}}">
       13
      </option>
-     <option value="14">
+     <option value="14" selected="{{dateIs @index 14}}">
       14
      </option>
-     <option value="15">
+     <option value="15" selected="{{dateIs @index 15}}">
       15
      </option>
-     <option value="16">
+     <option value="16" selected="{{dateIs @index 16}}">
       16
      </option>
-     <option value="17">
+     <option value="17" selected="{{dateIs @index 17}}">
       17
      </option>
-     <option value="18">
+     <option value="18" selected="{{dateIs @index 18}}">
       18
      </option>
-     <option value="19">
+     <option value="19" selected="{{dateIs @index 19}}">
       19
      </option>
-     <option value="20">
+     <option value="20" selected="{{dateIs @index 20}}">
       20
      </option>
-     <option value="21">
+     <option value="21" selected="{{dateIs @index 21}}">
       21
      </option>
-     <option value="22">
+     <option value="22" selected="{{dateIs @index 22}}">
       22
      </option>
-     <option value="23">
+     <option value="23" selected="{{dateIs @index 23}}">
       23
      </option>
-     <option value="24">
+     <option value="24" selected="{{dateIs @index 24}}">
       24
      </option>
-     <option value="25">
+     <option value="25" selected="{{dateIs @index 25}}">
       25
      </option>
-     <option value="26">
+     <option value="26" selected="{{dateIs @index 26}}">
       26
      </option>
-     <option value="27">
+     <option value="27" selected="{{dateIs @index 27}}">
       27
      </option>
-     <option value="28">
+     <option value="28" selected="{{dateIs @index 28}}">
       28
      </option>
-     <option value="29">
+     <option value="29" selected="{{dateIs @index 29}}">
       29
      </option>
-     <option value="30">
+     <option value="30" selected="{{dateIs @index 30}}">
       30
      </option>
-     <option value="31">
+     <option value="31" selected="{{dateIs @index 31}}">
       31
      </option>
     </select>
    </div>
    <div class="col-sm-3">
-     <button class="btn xsmall btn-default" type="button" id="add_date" style="border: none">
-       <span style="color: #5cb85c;" class="fa fa-plus"></span>
+     {{#if not_equal @index 4}}
+     <button class="btn xsmall btn-default add_date" type="button" id="{{@index}}" style="border: none">
+       <span style="color: #5cb85c;" class="fa fa-plus" id="{{@index}}"></span>
      </button>
-     <button class="xsmall btn btn-default" type="button" id="del_date" style="border: none">
-       <span style="color: #d9534f" class="fa fa-minus"></span>
+     {{/if}}
+     {{#if not_the_only_date}}
+     <button class="xsmall btn btn-default del_date" type="button" id="{{@index}}" style="border: none">
+       <span style="color: #d9534f" class="fa fa-minus" id="{{@index}}"></span>
      </button>
+     {{/if}}
    </div>
   </div>
   {{/each}}

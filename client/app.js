@@ -3,19 +3,19 @@ Session.set("showAddForm", false); //only true for testing
 Session.set("recurring", false); //only true for testing
 Session.set("period", "none");
 Session.set("type", "none");
-Session.set('event_dates', [1]);
+Session.set('event_dates', [null]);
 Session.set('event_days', ["Monday"]);
 Session.set('event_months', ["January"]);
-Session.set('event_dates_pickers', [0]);
-Session.set('event_days_pickers' [0]);
-Session.set('event_months_pickers', [0]);
 Session.set("skips", 1);
 Session.set("skips_enabled", false);
 
 
 Template.recurring.helpers({
   events: function () {
-    return Events.find({}, {sort: {createdAt: -1}});
+    events = Events.find({}, {sort: {createdAt: -1}});
+    //console.log(events.collection.queries[].results);
+    return events;
+
   }
 });
 
