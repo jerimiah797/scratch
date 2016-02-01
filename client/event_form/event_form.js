@@ -12,16 +12,16 @@ Template.event_form.events({
 
    if (recurring==true) {
      var period = Session.get("period");
+     myDate = moment();
      if (period == 'week') {
        var frequency = Session.get('event_days');
      } else if (period == 'month') {
        var frequency = Session.get('event_dates');
+       recurrence = myDate.recur().every(frequency).dayofmonth();
      } else if (period == 'year') {
        var frequency = Session.get('event_months');
        var sub_frequency = Session.get('event_dates');
      }
-     //var dayofweek = event.target.dayofweek.value;
-     var starting = new Date();
    };
 
    console.log("name: "+name);
@@ -30,16 +30,16 @@ Template.event_form.events({
    console.log("recurring: "+recurring.toString());
    console.log("frequency: "+frequency.toString());
    console.log("period: "+period);
+   console.log("recurrence: "+recurrence.humanize());
 
    // Insert a task into the collection
    Events.insert({
      name: name,
      amount: amount,
      type: type,
-     //recurring: recurring,
-     frequency: frequency,
-     period: period,
-     starting: starting,
+     recurring: recurring,
+     recurrence: recurrence
+
      createdAt: new Date() // current time
    });
 
@@ -49,12 +49,9 @@ Template.event_form.events({
    //Reinitialize Session vars
    Session.set('period', "none");
    Session.set("type", "none");
-   Session.set('event_dates', [1]);
+   Session.set('event_dates', [null]);
    Session.set('event_days', ["Monday"]);
    Session.set('event_months', ["January"]);
-   Session.set('event_dates_pickers', [0]);
-   Session.set('event_days_pickers' [0]);
-   Session.set('event_months_pickers', [0]);
    Session.set("skips", 1);
    Session.set("skips_enabled", false);
    //hide form, reinitialize recurring checkbox
@@ -163,10 +160,6 @@ Template.dayofmonth_selector.helpers({
     length = Session.get('event_dates').length;
     if (length > 1) return true;
   }
-});
-
-Template.dayofmonth_selector.onRendered(function()  {
-  //console.log("I'm getting rendered!");
 });
 
 Template.dayofmonth_selector.events({

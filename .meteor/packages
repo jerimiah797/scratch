@@ -21,3 +21,4 @@ insecure                # Allow all DB writes from clients (for prototyping)
 momentjs:moment
 twbs:bootstrap
 fortawesome:fontawesome
+gilbertwat:moment-recur
