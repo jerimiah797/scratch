@@ -9,15 +9,15 @@ Template.event_form.events({
    var amount = event.target.amount.value;
    var type = Session.get("type");
    var recurring = Session.get("recurring");
-
+   var createdAt = new Date();
    if (recurring==true) {
      var period = Session.get("period");
-     myDate = moment();
      if (period == 'week') {
        var frequency = Session.get('event_days');
      } else if (period == 'month') {
        var frequency = Session.get('event_dates');
-       recurrence = myDate.recur().every(frequency).dayofmonth();
+       recurrence = moment.recur().every(frequency).daysOfMonth();
+       //console.log(recurrence);
      } else if (period == 'year') {
        var frequency = Session.get('event_months');
        var sub_frequency = Session.get('event_dates');
@@ -30,7 +30,10 @@ Template.event_form.events({
    console.log("recurring: "+recurring.toString());
    console.log("frequency: "+frequency.toString());
    console.log("period: "+period);
-   console.log("recurrence: "+recurrence.humanize());
+
+   console.log(recurrence.rules[0].measure);
+   console.log(Object.keys(recurrence.rules[0].units));
+   console.log("createdAt: "+moment(createdAt).format("dddd, MMMM Do YYYY"));
 
    // Insert a task into the collection
    Events.insert({
@@ -38,9 +41,10 @@ Template.event_form.events({
      amount: amount,
      type: type,
      recurring: recurring,
-     recurrence: recurrence
-
-     createdAt: new Date() // current time
+     period: period,
+     frequency: frequency,
+     recurrence: recurrence,
+     createdAt: createdAt // current date
    });
 
    // Clear form
